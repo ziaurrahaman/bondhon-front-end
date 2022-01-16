@@ -120,12 +120,12 @@ export default function SignInSide() {
         if (result.status === 200) {
           if (result.data.data.user_type === "kazi") {
             console.log(result.data.data.user_type);
-            router.push("http://localhost:3001/dashboard");
+            router.push("./dashboard");
           } else if (result.data.data.user_type === "groom") {
-            router.push("http://localhost:3001/groom");
+            router.push("./groom");
           } else if (result.data.data.user_type === "bride") {
             console.log(result.data.data.user_type);
-            router.push("http://localhost:3001/bride");
+            router.push("./bride");
           }
         }
       } catch (error) {

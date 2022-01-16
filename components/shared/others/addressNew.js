@@ -30,6 +30,11 @@ const AddressNew = (props) => {
   const handleUnionChange = (event) => {
     setUnion(event.target.value);
   };
+  // district_id: "",
+  // upazila_id: "",
+  // union_id: "",
+  // post_code: "",
+  // detail_address: "",
 
   return (
     <>
@@ -41,8 +46,12 @@ const AddressNew = (props) => {
           <TextField
             fullWidth
             label="জেলা"
-            name="district"
+            name="district_id"
+            value={props.mInfo}
             //onChange={handleChange}
+            onChange={(e) => {
+              props.onChange(e);
+            }}
             required
             select
             SelectProps={{ native: true }}
@@ -61,7 +70,7 @@ const AddressNew = (props) => {
           <TextField
             fullWidth
             label="উপজেলা/থানা"
-            name="unionWard"
+            name="upazila_id"
             //onChange={handleChange}
             required
             select
@@ -80,7 +89,7 @@ const AddressNew = (props) => {
           <TextField
             fullWidth
             label="ইউনিয়ন/ওয়ার্ড"
-            name="unionWard"
+            name="union_id"
             //onChange={handleChange}
             required
             select
@@ -99,8 +108,9 @@ const AddressNew = (props) => {
           <TextField
             fullWidth
             label="পোস্ট অফিস"
-            name="postOffice"
+            name="post_code"
             //onChange={handleChange}
+
             required
             select
             SelectProps={{ native: true }}
@@ -118,7 +128,7 @@ const AddressNew = (props) => {
           <TextField
             required
             id="village"
-            name="village"
+            name="detail_address"
             type="text"
             label="বাড়ি নং, রাস্তা নং, গ্রাম/মহল্লা লিখুন"
             fullWidth

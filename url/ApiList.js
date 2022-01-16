@@ -6,3 +6,4 @@ export const bridesAddressInfo = localIp + "address";
 export const userLoginUrl = localIp + "login/login";
 export const groomeReportUrl = localIp + "allCitizen/user_type/groom";
 export const brideeReportUrl = localIp + "allCitizen/user_type/bride";
+export const marriageInfoBasicInfoUrl = localIp + "marriage_info";
