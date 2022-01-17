@@ -37,6 +37,7 @@ import axios from "axios";
 import { NotificationManager } from "react-notifications";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import SendIcon from "@mui/icons-material/Send";
+import Capture from "../camera/Capture";
 
 const style = {
   position: "absolute",
@@ -82,6 +83,9 @@ const Bride = (props) => {
   const handleClosePic = () => setOpenPic(false);
   const handleCloseRight = () => setOpenRight(false);
   const handleCloseLeft = () => setOpenLeft(false);
+  const [openCamera, setOpenCamera] = useState(false);
+  const handleCloseCamera = () => setOpenCamera(false);
+  const handleOpenCamera = () => setOpenCamera(true);
 
   // Begin Image Brows For Groom
   const [bridePic, setBridePic] = useState({
@@ -127,6 +131,16 @@ const Bride = (props) => {
   const handleOnSubmitLeftFP = () => {
     setLeftFP(true);
     handleCloseLeft(true);
+  };
+  //Capture Image
+  let onImageConfirm = (base64Image) => {
+    if (base64Image != "") {
+      setOpenCamera(false);
+    }
+    setGroomPic(() => ({
+      groomImage: base64Image,
+      mimetypeback: ".png",
+    }));
   };
 
   const ImageModalRegion = () => {
@@ -1140,6 +1154,7 @@ const Bride = (props) => {
                   height={160}
                 />
               </Grid>
+
               <Modal
                 open={openPic}
                 onClose={handleClosePic}

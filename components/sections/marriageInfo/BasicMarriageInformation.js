@@ -19,14 +19,15 @@ import { useState } from "react";
 import axios from "axios";
 import { marriageInfoBasicInfoUrl } from "../../../url/ApiList";
 import SaveIcon from "@mui/icons-material/Save";
-import { set } from "date-fns";
+import { set, setMilliseconds } from "date-fns";
+import { NotificationManager } from "react-notifications";
 
 const BasicMarriageInformation = () => {
-  const [addressType, setAddressType] = useState("");
-  const [division, setDivision] = useState("");
-  const [district, setDistrict] = useState("");
-  const [upazila, setUpazila] = useState("");
-  const [union, setUnion] = useState("");
+  // const [addressType, setAddressType] = useState("");
+  // const [division, setDivision] = useState("");
+  // const [district, setDistrict] = useState("");
+  // const [upazila, setUpazila] = useState("");
+  // const [union, setUnion] = useState("");
 
   // const handleAddTypeChange = (event) => {
   //   setAddressType(event.target.value);
@@ -70,10 +71,10 @@ const BasicMarriageInformation = () => {
 
   function isHusbandPerfomDevorceChangeHandler(event) {
     console.log(event.target.value);
-    if (event.target.value === "bride") {
+    if (event.target.value === "married") {
       setIsHunbandPerformDevorec(true);
     }
-    if (event.target.value === "groom") {
+    if (event.target.value === "unmarried") {
       setIsHunbandPerformDevorec(false);
     }
     if (isHusbandTakenPrmissionFromCurrentWife === true) {
@@ -156,63 +157,99 @@ const BasicMarriageInformation = () => {
 
   const hadnleChange = (e) => {
     const { name, value } = e.target;
-    switch (name) {
-      case "district_id":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.district_id = value === "" && "জেলা নির্বাচন করুন";
-        break;
-      case "upazila_id":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.district_id = value === "" && "উপজেলা নির্বাচন করুন";
-        break;
+    console.log(name);
+    console.log(value);
+    setMarriageInfo({
+      ...marriageInfo,
+      [name]: e.target.value,
+    });
+    // switch (name) {
+    //   case "district_id":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.district_id = value === "" && "জেলা নির্বাচন করুন";
+    //     break;
+    //   case "upazila_id":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.district_id = value === "" && "উপজেলা নির্বাচন করুন";
+    //     break;
 
-      case "union_id":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.district_id =
-          value === "" && "ইউনিয়ন অথবা ওয়ার্ড নির্বাচন করুন";
-        break;
-      case "post_code":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.district_id = value === "" && "পোস্ট অফিস নির্বাচন করুন";
-        break;
-      case "detail_address":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.detail_address = value === "" && "বিস্তারিত ঠিকানা দিন";
-        break;
-      case "fixed_on":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.fixed_on = value === "" && "তারিখ দিন";
-        break;
-      case "marriage_date":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.marriage_date = value === "" && "তারিখ দিন";
-        break;
-      case "reg_date":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.reg_date = value === "" && "তারিখ দিন";
-        break;
-      case "denmohor":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.denmohor = value === "" && "দেনমোহরের পরিমাণ দিন";
-        break;
-      case "muazzol":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.denmohor = value === "" && "মুয়াজ্জল পরিমাণ দিন";
-        break;
-      case "muazzil":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
+    //   case "union_id":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.district_id =
+    //       value === "" && "ইউনিয়ন অথবা ওয়ার্ড নির্বাচন করুন";
+    //     break;
+    //   case "post_code":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.district_id = value === "" && "পোস্ট অফিস নির্বাচন করুন";
+    //     break;
+    //   case "detail_address":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.detail_address = value === "" && "বিস্তারিত ঠিকানা দিন";
+    //     break;
+    //   case "fixed_on":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.fixed_on = value === "" && "তারিখ দিন";
+    //     break;
+    //   case "marriage_date":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.marriage_date = value === "" && "তারিখ দিন";
+    //     break;
+    //   case "reg_date":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.reg_date = value === "" && "তারিখ দিন";
+    //     break;
+    //   case "denmohor":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.denmohor = value === "" && "দেনমোহরের পরিমাণ দিন";
+    //     break;
+    //   case "muazzol":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.denmohor = value === "" && "মুয়াজ্জল পরিমাণ দিন";
+    //     break;
+    //   case "muazzil":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
 
-        formErrors.denmohor = value === "" && "মুয়াজ্জিল পরিমাণ দিন";
-        break;
-      case "paid_denmohor":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-        formErrors.denmohor = value === "" && "আদায়কৃতদেনমোহরের পরিমাণ দিন";
-        break;
-      case "isMarried":
-        setMarriageInfo({ ...marriageInfo, [name]: value });
-    }
+    //     formErrors.denmohor = value === "" && "মুয়াজ্জিল পরিমাণ দিন";
+    //     break;
+    //   case "paid_denmohor":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     formErrors.denmohor = value === "" && "আদায়কৃতদেনমোহরের পরিমাণ দিন";
+    //     break;
+    //   case "whom":
+    //     setMarriageInfo({ ...marriageInfo, [name]: value });
+    //     break;
+    //   case "mrg_status":
+    //     setMarriageInfo({ ...marriageInfo.mrg_status, [name]: value });
+    //     console.log("mrg_vlu", value);
+    //     break;
+    //   case "devorce_con":
+    //     marriageInfo.devorce_con = value;
+    //     // setMarriageInfo({ ...marriageInfo.devorce_con, [name]: value });
+    //     console.log("omg", e.target.name);
+    //     console.log("omg", e.target.value);
+    //     break;
+    //   case "revoke_per":
+    //     setMarriageInfo({ ...marriageInfo.revoke_per, [name]: value });
+    //     break;
+    //   case "khorposh_pr":
+    //     // setMarriageInfo({ ...marriageInfo.revoke_per, [name]: value });
+    //     break;
+    //   case "alimony_pr":
+    //     setMarriageInfo({ ...marriageInfo.alimony_pr, [name]: value });
+    //     break;
+    //   case "wohom":
+    //     setMarriageInfo({ ...marriageInfo.whom, [name]: value });
+    //     break;
+    //   case "per_no":
+    //     setMarriageInfo({ ...marriageInfo.per_no, [name]: value });
+    //     break;
+    //   case "per_date":
+    //     setMarriageInfo({ ...marriageInfo.per_date, [name]: value });
+
+    //     break;
+    // }
   };
-
+  console.log("State of my====", marriageInfo);
   let onSubmitData = async (e) => {
     e.preventDefault();
 
@@ -230,7 +267,15 @@ const BasicMarriageInformation = () => {
       paid_denmohor: marriageInfo.paid_denmohor,
       muazzol: marriageInfo.muazzol,
       muazzil: marriageInfo.muazzil,
-      isMarried: marriageInfo.isMarried,
+
+      mrg_id: 23456,
+      whom: marriageInfo.whom,
+      mrg_status: marriageInfo.mrg_status,
+      devorce_con: marriageInfo.devorce_con,
+      revoke_per: marriageInfo.revoke_per,
+      alimony_prv: marriageInfo.alimony_pr,
+      per_no: marriageInfo.per_no,
+      per_date: marriageInfo.per_date,
     };
     console.log("marriageINfoPayload:", payload);
 
@@ -533,9 +578,12 @@ const BasicMarriageInformation = () => {
                       row
                       aria-label="position"
                       name="mrg_status"
-                      defaultValue="top"
+                      onClick={hadnleChange}
                       onChange={(e) => {
-                        hadnleChange(e);
+                        console.log("e", e.target.name);
+                        console.log("e", e.target.value);
+                        console.log(marriageInfo);
+
                         maritalStatusChangeHandler(e);
                       }}
                     >
@@ -563,14 +611,17 @@ const BasicMarriageInformation = () => {
                       <TextField
                         name="devorce_con"
                         label="তালাক প্রাপ্ত হওয়ার শর্ত"
-                        onChange={hadnleChange}
+                        onChange={(e) => {
+                          console.log("e", e.target.name);
+                          setMarriageInfo({ ...marriageInfo });
+                          hadnleChange(e);
+                        }}
                         fullWidth
                         size="small"
                         type="text"
                         value={marriageInfo.devorce_con}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
+                        variant="outlined"
+                        required
                       />
                     </Grid>
                     <Grid item xs={12} sm={12} md={6}>
@@ -581,7 +632,6 @@ const BasicMarriageInformation = () => {
                           name="revoke_per"
                           onChange={(e) => {
                             hadnleChange(e);
-                            husbandsRightRevokedChangeHandler(e);
                           }}
                         >
                           <FormControlLabel
@@ -600,11 +650,12 @@ const BasicMarriageInformation = () => {
                           name="khorposh_pr"
                           onChange={(e) => {
                             hadnleChange(e);
+                            husbandsRightRevokedChangeHandler(e);
                           }}
                         >
                           <FormControlLabel
-                            value={"khorposhEvidence"}
-                            label={"খোরপোশের প্রমাণ"}
+                            value="khorposhEvidence"
+                            label="খোরপোশের প্রমাণ"
                             control={<Radio color="primary" />}
                           />
                         </RadioGroup>
@@ -641,20 +692,20 @@ const BasicMarriageInformation = () => {
                     <RadioGroup
                       row
                       aria-label="position"
-                      name="wohom"
+                      name="whom"
                       defaultValue="top"
+                      onClick={hadnleChange}
                       onChange={(e) => {
                         isHusbandPerfomDevorceChangeHandler(e);
-                        hadnleChange(e);
                       }}
                     >
                       <FormControlLabel
-                        value="groom"
+                        value="unmarried"
                         control={<Radio color="primary" />}
                         label="অবিবাহিত"
                       />
                       <FormControlLabel
-                        value="bride"
+                        value="married"
                         control={<Radio color="success" />}
                         label="বিবাহিত"
                       />
@@ -707,6 +758,7 @@ const BasicMarriageInformation = () => {
                       <Grid item xs={12} sm={12} md={6}>
                         <Stack>
                           <TextField
+                            onChange={hadnleChange}
                             value={marriageInfo.per_date}
                             name="per_date"
                             id="marriageDate"
@@ -725,7 +777,7 @@ const BasicMarriageInformation = () => {
                   )}
               </Grid>
             </Grid>
-            {/* <Grid
+            <Grid
               item
               xs={12}
               md={12}
@@ -741,12 +793,12 @@ const BasicMarriageInformation = () => {
                   sx={{ mr: 1 }}
                   startIcon={<SaveIcon />}
                   onClick={onSubmitData}
-                  disabled={checkFormError()}
+                  // disabled={checkFormError()}
                 >
                   &nbsp; জমা দিন
                 </Button>
               </Tooltip>
-            </Grid> */}
+            </Grid>
           </Grid>
         </Paper>
       </Container>
