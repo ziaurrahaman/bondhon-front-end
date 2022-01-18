@@ -21,6 +21,11 @@ import { marriageInfoBasicInfoUrl } from "../../../url/ApiList";
 import SaveIcon from "@mui/icons-material/Save";
 import { set, setMilliseconds } from "date-fns";
 import { NotificationManager } from "react-notifications";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  // SetGroomRegPayloadAction,
+  RegisterGroom,
+} from "../../../redux/actions/groom_action";
 
 const BasicMarriageInformation = () => {
   // const [addressType, setAddressType] = useState("");
@@ -48,7 +53,7 @@ const BasicMarriageInformation = () => {
   // const handleUnionChange = (event) => {
   //   setUnion(event.target.value);
   // };
-
+ 
   const [isHusbandPerfomDevorce, setIsHunbandPerformDevorec] =
     React.useState(false);
   const [

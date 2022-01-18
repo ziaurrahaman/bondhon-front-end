@@ -38,6 +38,11 @@ import { NotificationManager } from "react-notifications";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import SendIcon from "@mui/icons-material/Send";
 import Capture from "../camera/Capture";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SetBrideRegPayloadAction,
+  RegisterBrideAction,
+} from "../../../redux/actions/bride_action";
 
 const style = {
   position: "absolute",
@@ -74,6 +79,7 @@ const rows = [
 ];
 
 const Bride = (props) => {
+  const dispatch = useDispatch();
   const [openPic, setOpenPic] = useState(false);
   const [openRight, setOpenRight] = useState(false);
   const [openLeft, setOpenLeft] = useState(false);
@@ -351,6 +357,7 @@ const Bride = (props) => {
   //   };
 
   const handleChange = (e) => {
+    dispatch(SetBrideRegPayloadAction(brideInfo));
     const { name, value } = e.target;
     switch (name) {
       case "nid":
@@ -521,63 +528,64 @@ const Bride = (props) => {
   };
 
   let onSubmitData = async (e) => {
-    console.log(`formErrro: ${formErrors}`);
-    e.preventDefault();
-    let payloadForAddress = {
-      address_type: brideInfo.address_type,
-      user_type: "Bride",
-      district_id: brideInfo.district_id,
-      upazila_id: brideInfo.upazila_id,
-      union_id: brideInfo.union_id,
-      post_code: brideInfo.post_code,
-      details_address: brideInfo.details_address,
-    };
-    let payloadForBrideBasic = {
-      nid: brideInfo.nid,
-      name: brideInfo.name,
-      dob: brideInfo.dob,
-      mobile_no: brideInfo.mobile_no,
-      email: brideInfo.email,
-      relegion: brideInfo.relegion,
-      father_name: brideInfo.father_name,
-      father_nid: brideInfo.father_nid,
-      mother_name: brideInfo.mother_name,
-      mother_nid: brideInfo.mother_nid,
-    };
-    console.log("payload value after clicking", payloadForBrideBasic);
-    console.log("payload value after clicking", payloadForAddress);
-    try {
-      console.log(` url1 ${bridesBasicInfo} `);
-      // console.log("token", config);
-      const brideBasicData = await axios.post(
-        bridesBasicInfo,
-        payloadForBrideBasic
-      );
-      const brideAddressData = await axios.post(
-        bridesAddressInfo,
-        payloadForAddress
-      );
+    dispatch(RegisterBrideAction(brideInfo));
+    // console.log(`formErrro: ${formErrors}`);
+    // e.preventDefault();
+    // let payloadForAddress = {
+    //   address_type: brideInfo.address_type,
+    //   user_type: "Bride",
+    //   district_id: brideInfo.district_id,
+    //   upazila_id: brideInfo.upazila_id,
+    //   union_id: brideInfo.union_id,
+    //   post_code: brideInfo.post_code,
+    //   details_address: brideInfo.details_address,
+    // };
+    // let payloadForBrideBasic = {
+    //   nid: brideInfo.nid,
+    //   name: brideInfo.name,
+    //   dob: brideInfo.dob,
+    //   mobile_no: brideInfo.mobile_no,
+    //   email: brideInfo.email,
+    //   relegion: brideInfo.relegion,
+    //   father_name: brideInfo.father_name,
+    //   father_nid: brideInfo.father_nid,
+    //   mother_name: brideInfo.mother_name,
+    //   mother_nid: brideInfo.mother_nid,
+    // };
+    // console.log("payload value after clicking", payloadForBrideBasic);
+    // console.log("payload value after clicking", payloadForAddress);
+    // try {
+    //   console.log(` url1 ${bridesBasicInfo} `);
+    //   // console.log("token", config);
+    //   const brideBasicData = await axios.post(
+    //     bridesBasicInfo,
+    //     payloadForBrideBasic
+    //   );
+    //   const brideAddressData = await axios.post(
+    //     bridesAddressInfo,
+    //     payloadForAddress
+    //   );
 
-      console.log("pay", brideBasicData.data.message);
-      console.log("pay", brideAddressData.data.message);
-      NotificationManager.success(brideBasicData.data.message, "Success", 5000);
-      NotificationManager.success(
-        brideAddressData.data.message,
-        "Success",
-        5000
-      );
+    //   console.log("pay", brideBasicData.data.message);
+    //   console.log("pay", brideAddressData.data.message);
+    //   NotificationManager.success(brideBasicData.data.message, "Success", 5000);
+    //   NotificationManager.success(
+    //     brideAddressData.data.message,
+    //     "Success",
+    //     5000
+    //   );
 
-      //router.push({ pathname: "/coop/income-expense" });
-    } catch (error) {
-      if (error.response) {
-        let message = error.response.data.errors[0].message;
-        NotificationManager.error(message, "Error", 5000);
-      } else if (error.request) {
-        NotificationManager.error("Error Connecting...", "Error", 5000);
-      } else if (error) {
-        // NotificationManager.error(error.toString(), "Error", 5000);
-      }
-    }
+    //   //router.push({ pathname: "/coop/income-expense" });
+    // } catch (error) {
+    //   if (error.response) {
+    //     let message = error.response.data.errors[0].message;
+    //     NotificationManager.error(message, "Error", 5000);
+    //   } else if (error.request) {
+    //     NotificationManager.error("Error Connecting...", "Error", 5000);
+    //   } else if (error) {
+    //     // NotificationManager.error(error.toString(), "Error", 5000);
+    //   }
+    // }
   };
 
   return (

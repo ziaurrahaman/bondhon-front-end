@@ -4,6 +4,8 @@ import React from "react";
 import "../styles/globals.css";
 import "react-notifications/lib/notifications.css";
 import { NotificationContainer } from "react-notifications";
+import { Provider } from "react-redux";
+import { store } from "../store/store";
 
 const theme = createTheme();
 
@@ -24,7 +26,9 @@ function MyApp({ Component, pageProps }) {
         </Head>
         <NotificationContainer />
 
-        <Component {...pageProps} />
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
       </>
     </ThemeProvider>
   );

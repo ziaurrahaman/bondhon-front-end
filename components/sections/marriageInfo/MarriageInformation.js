@@ -19,6 +19,12 @@ import Groom from "../groom/Groom";
 import Bride from "../bride/Bride";
 import Review from "../../shared/others/review";
 import LawyerFatherAndWitness from "../lawyer-witness/Lawyer_Witness";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  // SetGroomRegPayloadAction,
+  RegisterGroom,
+} from "../../../redux/actions/groom_action";
+import { RegisterBrideAction } from "../../../redux/actions/bride_action";
 
 // ------------ Stepper Steps -------------
 const steps = [
@@ -45,6 +51,9 @@ function getStepContent(step) {
       throw new Error("Unknown step");
   }
 }
+
+const bearer = (data) => {};
+
 const FinalStep = () => {
   return (
     <>
@@ -60,10 +69,21 @@ const FinalStep = () => {
 };
 
 const MarriageInformation = () => {
+  const groomDispatch = useDispatch();
   const [activeStep, setActiveStep] = React.useState(0);
+  const groomPayload = useSelector((state) => state.groomReg);
+  const bridePayload = useSelector((state) => state.brideReg);
+  console.log("groompayloadddddddd", groomPayload);
+  console.log("bridepayloadddddddd", bridePayload);
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    if (activeStep === 0) {
+      console.log("groompayload", groomPayload);
+      groomDispatch(RegisterGroom(groomPayload));
+    } else if (activeStep == 1) {
+      groomDispatch(RegisterBrideAction(bridePayload));
+    }
   };
 
   const handleBack = () => {
@@ -127,7 +147,27 @@ const MarriageInformation = () => {
                     <Button
                       variant="contained"
                       endIcon={<SendIcon />}
-                      onClick={handleNext}
+                      onClick={
+                        handleNext
+                        // switch (activeStep) {
+                        //   case 0:
+                        //     console.log("groomPayloadsss", groomPayload);
+                        //     groomDispatch(RegisterGroom(groomPayload));
+                        //     break;
+                        //   case 1:
+                        //     // groomDispatch(RegisterGroom(groomPayload)) ;
+                        //     break;
+                        //   case 2:
+                        //     // groomDispatch(RegisterGroom(groomPayload)) ;
+                        //     break;
+                        //   case 3:
+                        //     // groomDispatch(RegisterGroom(groomPayload)) ;
+                        //     break;
+                        //   case 4:
+                        //     // groomDispatch(RegisterGroom(groomPayload)) ;
+                        //     break;
+                        // }
+                      }
                     >
                       {activeStep === steps.length - 1
                         ? "জমা দিন"
