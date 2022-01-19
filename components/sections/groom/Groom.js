@@ -77,7 +77,7 @@ const rows = [
   ),
 ];
 
-const Bride = (props) => {
+const Groom = (props) => {
   const dispatch = useDispatch();
   const [openPic, setOpenPic] = useState(false);
   const [openRight, setOpenRight] = useState(false);
@@ -88,6 +88,9 @@ const Bride = (props) => {
   const handleClosePic = () => setOpenPic(false);
   const handleCloseRight = () => setOpenRight(false);
   const handleCloseLeft = () => setOpenLeft(false);
+  const groomPayload = useSelector((state) => state.groomReg.value);
+
+ 
 
   // Begin Image Brows For Groom
   const [bridePic, setBridePic] = useState({
@@ -343,7 +346,7 @@ const Bride = (props) => {
   //   };
 
   const handleChange = (e) => {
-    dispatch(SetGroomRegPayloadAction(e.target.name, e.target.value));
+    dispatch(SetGroomRegPayloadAction(brideInfo));
     const { name, value } = e.target;
     switch (name) {
       case "nid":
@@ -1280,4 +1283,4 @@ const Bride = (props) => {
   );
 };
 
-export default Bride;
+export default Groom;

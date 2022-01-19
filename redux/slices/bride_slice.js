@@ -27,8 +27,27 @@ export const brideGroomSlice = createSlice({
   },
   reducers: {
     SetBrideRegPayloadAction: (state, action) => {
-      (state.nid = action.payload.nid),
-        (state.name = action.payload.name),
+      // let payload = {
+      //   nid: action.payload.nid,
+      //   name: action.payload.name,
+      //   dob: action.payload.dob,
+      //   mobile_no: action.payload.mobile_no,
+      //   email: action.payload.email,
+      //   relegion: action.payload.relegion,
+      //   father_name: action.payload.father_name,
+      //   father_nid: action.payload.father_nid,
+      //   mother_name: action.payload.mother_name,
+      //   mother_nid: action.payload.mother_nid,
+      //   address_type: action.payload.address_type,
+      //   user_type: action.payload.user_type,
+      //   district_id: action.payload.district_id,
+      //   upazila_id: action.payload.upazila_id,
+
+      //   union_id: action.payload.union_id,
+      //   post_code: action.payload.post_code,
+      //   details_address: action.payload.details_address,
+
+      (state.name = action.payload.name),
         (state.dob = action.payload.dob),
         (state.mobile_no = action.payload.mobile_no),
         (state.email = action.payload.email),
@@ -44,6 +63,25 @@ export const brideGroomSlice = createSlice({
         (state.union_id = action.payload.union_id),
         (state.post_code = action.payload.post_code),
         (state.details_address = action.payload.details_address);
+      // };
+      // return payload;
+      // (state.nid = action.payload.nid),
+      //   (state.name = action.payload.name),
+      //   (state.dob = action.payload.dob),
+      //   (state.mobile_no = action.payload.mobile_no),
+      //   (state.email = action.payload.email),
+      //   (state.relegion = action.payload.relegion),
+      //   (state.father_name = action.payload.father_name),
+      //   (state.father_nid = action.payload.father_nid),
+      //   (state.mother_name = action.payload.mother_name),
+      //   (state.mother_nid = action.payload.mother_nid),
+      //   (state.address_type = action.payload.address_type),
+      //   (state.user_type = action.payload.user_type),
+      //   (state.district_id = action.payload.district_id),
+      //   (state.upazila_id = action.payload.upazila_id),
+      //   (state.union_id = action.payload.union_id),
+      //   (state.post_code = action.payload.post_code),
+      //   (state.details_address = action.payload.details_address);
     },
 
     RegisterBride: async (state, action) => {

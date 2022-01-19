@@ -25,6 +25,10 @@ import {
   RegisterGroom,
 } from "../../../redux/actions/groom_action";
 import { RegisterBrideAction } from "../../../redux/actions/bride_action";
+import axios from "axios";
+import { NotificationManager } from "react-notifications";
+import { bridesBasicInfo } from "../../../url/ApiList";
+import { bridesAddressInfo } from "../../../url/ApiList";
 
 // ------------ Stepper Steps -------------
 const steps = [
@@ -72,18 +76,49 @@ const MarriageInformation = () => {
   const groomDispatch = useDispatch();
   const [activeStep, setActiveStep] = React.useState(0);
   const groomPayload = useSelector((state) => state.groomReg);
-  const bridePayload = useSelector((state) => state.brideReg);
-  console.log("groompayloadddddddd", groomPayload);
-  console.log("bridepayloadddddddd", bridePayload);
+  // const bridePayload = useSelector((state) => state.brideReg);
+  // console.log("groompayloadddddddd", groomPayload);
+  // console.log("bridepayloadddddddd", bridePayload);
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-    if (activeStep === 0) {
-      console.log("groompayload", groomPayload);
-      groomDispatch(RegisterGroom(groomPayload));
-    } else if (activeStep == 1) {
-      groomDispatch(RegisterBrideAction(bridePayload));
+  const handleNext = async () => {
+    console.log("groompayloadddddddd", groomPayload);
+    try {
+      console.log(` url1 ${bridesBasicInfo} `);
+      // console.log("token", config);
+      const brideBasicData = await axios.post(bridesBasicInfo, groomPayload);
+      const brideAddressData = await axios.post(bridesAddressInfo, {
+        address_type: action.payload.address_type,
+        user_type: "Groom",
+        district_id: groomPayload.district_id,
+        upazila_id: groomPayload.upazila_id,
+        union_id: groomPayload.union_id,
+        post_code: groomPayload.post_code,
+        details_address: groomPayload.details_address,
+      });
+
+      console.log("pay", brideBasicData.data.message);
+      console.log("pay", brideAddressData.data.message);
+      NotificationManager.success(brideBasicData.data.message, "Success", 5000);
+
+      //router.push({ pathname: "/coop/income-expense" });
+    } catch (error) {
+      if (error.response) {
+        let message = error.response.data.errors[0].message;
+        NotificationManager.error(message, "Error", 5000);
+      } else if (error.request) {
+        NotificationManager.error("Error Connecting...", "Error", 5000);
+      } else if (error) {
+        // NotificationManager.error(error.toString(), "Error", 5000);
+      }
     }
+    // groomDispatch(RegisterGroom(groomPayload));
+    // console.log("bridePayloadddddddd", bridePayload);
+    setActiveStep(activeStep + 1);
+    // if (activeStep === 0) {
+    //   groomDispatch(RegisterGroom(groomPayload));
+    // } else if (activeStep == 1) {
+    //   groomDispatch(RegisterBrideAction(bridePayload));
+    // }
   };
 
   const handleBack = () => {
