@@ -46,8 +46,8 @@ export const brideGroomSlice = createSlice({
       //   union_id: action.payload.union_id,
       //   post_code: action.payload.post_code,
       //   details_address: action.payload.details_address,
-
-      (state.name = action.payload.name),
+      (state.nid = action.payload.name),
+        (state.name = action.payload.name),
         (state.dob = action.payload.dob),
         (state.mobile_no = action.payload.mobile_no),
         (state.email = action.payload.email),
@@ -84,43 +84,43 @@ export const brideGroomSlice = createSlice({
       //   (state.details_address = action.payload.details_address);
     },
 
-    RegisterBride: async (state, action) => {
-      try {
-        console.log(` url1 ${bridesBasicInfo} `);
-        // console.log("token", config);
-        const brideBasicData = await axios.post(
-          bridesBasicInfo,
-          action.payload
-        );
-        const brideAddressData = await axios.post(bridesAddressInfo, {
-          address_type: action.payload.address_type,
-          user_type: "Bride",
-          district_id: action.payload.district_id,
-          upazila_id: action.payload.upazila_id,
-          union_id: action.payload.union_id,
-          post_code: action.payload.post_code,
-          details_address: action.payload.details_address,
-        });
+    // RegisterBride: async (state, action) => {
+    //   try {
+    //     console.log(` url1 ${bridesBasicInfo} `);
+    //     // console.log("token", config);
+    //     const brideBasicData = await axios.post(
+    //       bridesBasicInfo,
+    //       action.payload
+    //     );
+    //     const brideAddressData = await axios.post(bridesAddressInfo, {
+    //       address_type: action.payload.address_type,
+    //       user_type: "Bride",
+    //       district_id: action.payload.district_id,
+    //       upazila_id: action.payload.upazila_id,
+    //       union_id: action.payload.union_id,
+    //       post_code: action.payload.post_code,
+    //       details_address: action.payload.details_address,
+    //     });
 
-        console.log("pay", brideBasicData.data.message);
-        console.log("pay", brideAddressData.data.message);
-        NotificationManager.success(
-          brideBasicData.data.message,
-          "Success",
-          5000
-        );
+    //     console.log("pay", brideBasicData.data.message);
+    //     console.log("pay", brideAddressData.data.message);
+    //     NotificationManager.success(
+    //       brideBasicData.data.message,
+    //       "Success",
+    //       5000
+    //     );
 
-        //router.push({ pathname: "/coop/income-expense" });
-      } catch (error) {
-        if (error.response) {
-          let message = error.response.data.errors[0].message;
-          NotificationManager.error(message, "Error", 5000);
-        } else if (error.request) {
-          NotificationManager.error("Error Connecting...", "Error", 5000);
-        } else if (error) {
-          // NotificationManager.error(error.toString(), "Error", 5000);
-        }
-      }
-    },
+    //     //router.push({ pathname: "/coop/income-expense" });
+    //   } catch (error) {
+    //     if (error.response) {
+    //       let message = error.response.data.errors[0].message;
+    //       NotificationManager.error(message, "Error", 5000);
+    //     } else if (error.request) {
+    //       NotificationManager.error("Error Connecting...", "Error", 5000);
+    //     } else if (error) {
+    //       // NotificationManager.error(error.toString(), "Error", 5000);
+    //     }
+    //   }
+    // },
   },
 });

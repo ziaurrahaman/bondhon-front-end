@@ -26,6 +26,7 @@ import {
   // SetGroomRegPayloadAction,
   RegisterGroom,
 } from "../../../redux/actions/groom_action";
+import { SetMarriageInfoPayloadAction } from "../../../redux/actions/mrg_info";
 
 const BasicMarriageInformation = () => {
   // const [addressType, setAddressType] = useState("");
@@ -53,7 +54,9 @@ const BasicMarriageInformation = () => {
   // const handleUnionChange = (event) => {
   //   setUnion(event.target.value);
   // };
- 
+  const dispatch = useDispatch();
+  const mrgInfoPayload = useSelector((state) => state.mrgInfo);
+
   const [isHusbandPerfomDevorce, setIsHunbandPerformDevorec] =
     React.useState(false);
   const [
@@ -103,26 +106,54 @@ const BasicMarriageInformation = () => {
 
   const [marriageInfo, setMarriageInfo] = React.useState({
     gb_id: "",
-    district_id: "",
-    upazila_id: "",
-    union_id: "",
-    post_code: "",
-    detail_address: "",
-    fixed_on: "",
-    marriage_date: "",
-    reg_date: "",
-    denmohor: "",
-    paid_denmohor: "",
-    muazzol: "",
-    muazzil: "",
-    mrg_id: "",
-    whom: "",
-    mrg_status: "",
-    devorce_con: "",
-    revoke_per: "",
-    alimony_pr: "",
-    per_no: "",
-    per_date: "",
+    district_id:
+      mrgInfoPayload.district_id !== undefined
+        ? mrgInfoPayload.district_id
+        : "",
+    upazila_id:
+      mrgInfoPayload.upazila_id !== undefined ? mrgInfoPayload.upazila_id : "",
+    union_id:
+      mrgInfoPayload.union_id !== undefined ? mrgInfoPayload.union_id : "",
+    post_code:
+      mrgInfoPayload.post_code !== undefined ? mrgInfoPayload.post_code : "",
+    detail_address:
+      mrgInfoPayload.detail_address !== undefined
+        ? mrgInfoPayload.detail_address
+        : "",
+    fixed_on:
+      mrgInfoPayload.fixed_on !== undefined ? mrgInfoPayload.fixed_on : "",
+    marriage_date:
+      mrgInfoPayload.marriage_date !== undefined
+        ? mrgInfoPayload.marriage_date
+        : "",
+    reg_date:
+      mrgInfoPayload.reg_date !== undefined ? mrgInfoPayload.reg_date : "",
+    denmohor:
+      mrgInfoPayload.denmohor !== undefined ? mrgInfoPayload.denmohor : "",
+    paid_denmohor:
+      mrgInfoPayload.paid_denmohor !== undefined
+        ? mrgInfoPayload.paid_denmohor
+        : "",
+    muazzol: mrgInfoPayload.muazzol !== undefined ? mrgInfoPayload.muazzol : "",
+    muazzil: mrgInfoPayload.muazzil !== undefined ? mrgInfoPayload.muazzil : "",
+    mrg_id: mrgInfoPayload.whom !== undefined ? mrgInfoPayload.whom : "",
+    whom:
+      mrgInfoPayload.district_id !== undefined
+        ? mrgInfoPayload.district_id
+        : "",
+    mrg_status:
+      mrgInfoPayload.mrg_status !== undefined ? mrgInfoPayload.mrg_status : "",
+    devorce_con:
+      mrgInfoPayload.devorce_con !== undefined
+        ? mrgInfoPayload.devorce_con
+        : "",
+    revoke_per:
+      mrgInfoPayload.revoke_per !== undefined ? mrgInfoPayload.revoke_per : "",
+    alimony_pr:
+      mrgInfoPayload.alimony_pr !== undefined ? mrgInfoPayload.alimony_pr : "",
+    per_no: mrgInfoPayload.per_no !== undefined ? mrgInfoPayload.per_no : "",
+    per_date:
+      mrgInfoPayload.per_date !== undefined ? mrgInfoPayload.per_date : "",
   });
 
   const [formErrors, setFormErrors] = React.useState({
@@ -161,6 +192,7 @@ const BasicMarriageInformation = () => {
   };
 
   const hadnleChange = (e) => {
+    dispatch(SetMarriageInfoPayloadAction(marriageInfo));
     const { name, value } = e.target;
     console.log(name);
     console.log(value);
@@ -254,7 +286,7 @@ const BasicMarriageInformation = () => {
     //     break;
     // }
   };
-  console.log("State of my====", marriageInfo);
+  // console.log("State of my====", marriageInfo);
   let onSubmitData = async (e) => {
     e.preventDefault();
 
@@ -782,7 +814,7 @@ const BasicMarriageInformation = () => {
                   )}
               </Grid>
             </Grid>
-            <Grid
+            {/* <Grid
               item
               xs={12}
               md={12}
@@ -803,7 +835,7 @@ const BasicMarriageInformation = () => {
                   &nbsp; জমা দিন
                 </Button>
               </Tooltip>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Paper>
       </Container>

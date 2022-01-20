@@ -30,6 +30,8 @@ import { NotificationManager } from "react-notifications";
 import { bridesBasicInfo } from "../../../url/ApiList";
 import { bridesAddressInfo } from "../../../url/ApiList";
 
+import { marriageInfoBasicInfoUrl } from "../../../url/ApiList";
+
 // ------------ Stepper Steps -------------
 const steps = [
   "বরের তথ্যাদি",
@@ -76,49 +78,78 @@ const MarriageInformation = () => {
   const groomDispatch = useDispatch();
   const [activeStep, setActiveStep] = React.useState(0);
   const groomPayload = useSelector((state) => state.groomReg);
-  // const bridePayload = useSelector((state) => state.brideReg);
+  const bridePayload = useSelector((state) => state.brideReg);
+  const mrgInfoPayload = useSelector((state) => state.mrgInfo);
   // console.log("groompayloadddddddd", groomPayload);
   // console.log("bridepayloadddddddd", bridePayload);
 
   const handleNext = async () => {
-    console.log("groompayloadddddddd", groomPayload);
-    try {
-      console.log(` url1 ${bridesBasicInfo} `);
-      // console.log("token", config);
-      const brideBasicData = await axios.post(bridesBasicInfo, groomPayload);
-      const brideAddressData = await axios.post(bridesAddressInfo, {
-        address_type: action.payload.address_type,
-        user_type: "Groom",
-        district_id: groomPayload.district_id,
-        upazila_id: groomPayload.upazila_id,
-        union_id: groomPayload.union_id,
-        post_code: groomPayload.post_code,
-        details_address: groomPayload.details_address,
-      });
-
-      console.log("pay", brideBasicData.data.message);
-      console.log("pay", brideAddressData.data.message);
-      NotificationManager.success(brideBasicData.data.message, "Success", 5000);
-
-      //router.push({ pathname: "/coop/income-expense" });
-    } catch (error) {
-      if (error.response) {
-        let message = error.response.data.errors[0].message;
-        NotificationManager.error(message, "Error", 5000);
-      } else if (error.request) {
-        NotificationManager.error("Error Connecting...", "Error", 5000);
-      } else if (error) {
-        // NotificationManager.error(error.toString(), "Error", 5000);
-      }
-    }
     // groomDispatch(RegisterGroom(groomPayload));
     // console.log("bridePayloadddddddd", bridePayload);
     setActiveStep(activeStep + 1);
-    // if (activeStep === 0) {
-    //   groomDispatch(RegisterGroom(groomPayload));
-    // } else if (activeStep == 1) {
-    //   groomDispatch(RegisterBrideAction(bridePayload));
-    // }
+    if (activeStep === 4) {
+      console.log("groompayloadddddddd", groomPayload);
+      try {
+        console.log(` url1 ${bridesBasicInfo} `);
+        // console.log("token", config);
+        const brideBasicData = await axios.post(bridesBasicInfo, groomPayload);
+        const brideAddressData = await axios.post(bridesAddressInfo, {
+          address_type: groomPayload.address_type,
+          user_type: "Groom",
+          district_id: groomPayload.district_id,
+          upazila_id: groomPayload.upazila_id,
+          union_id: groomPayload.union_id,
+          post_code: groomPayload.post_code,
+          details_address: groomPayload.details_address,
+        });
+        console.log(` url1 ${bridesBasicInfo} `);
+        // console.log("token", config);
+        const groomBasicData = await axios.post(bridesBasicInfo, {
+          nid: bridePayload.nid,
+          name: bridePayload.name,
+          dob: bridePayload.dob,
+          mobile_no: bridePayload.mobile_no,
+          email: bridePayload.email,
+          relegion: bridePayload.relegion,
+          father_name: bridePayload.father_name,
+          father_nid: bridePayload.father_nid,
+          mother_name: bridePayload.mother_name,
+          mother_nid: bridePayload.mother_nid,
+        });
+        const groomAddressData = await axios.post(bridesAddressInfo, {
+          address_type: bridePayload.address_type,
+          user_type: "Bride",
+          district_id: bridePayload.district_id,
+          upazila_id: bridePayload.upazila_id,
+          union_id: bridePayload.union_id,
+          post_code: bridePayload.post_code,
+          details_address: bridePayload.details_address,
+        });
+        const marriageBasicData = await axios.post(
+          marriageInfoBasicInfoUrl,
+          mrgInfoPayload
+        );
+
+        console.log("pay", brideBasicData.data.message);
+        console.log("pay", brideAddressData.data.message);
+        NotificationManager.success(
+          brideBasicData.data.message,
+          "Success",
+          5000
+        );
+
+        //router.push({ pathname: "/coop/income-expense" });
+      } catch (error) {
+        if (error.response) {
+          let message = error.response.data.errors[0].message;
+          NotificationManager.error(message, "Error", 5000);
+        } else if (error.request) {
+          NotificationManager.error("Error Connecting...", "Error", 5000);
+        } else if (error) {
+          // NotificationManager.error(error.toString(), "Error", 5000);
+        }
+      }
+    }
   };
 
   const handleBack = () => {
