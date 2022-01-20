@@ -31,7 +31,7 @@ export const marriageInfoSlice = createSlice({
     devorce_con: "",
     revoke_per: "",
     alimony_pr: "",
-    per_no: "",
+    per_no: 222222,
     per_date: "2022-5-20",
   },
   reducers: {
@@ -55,7 +55,7 @@ export const marriageInfoSlice = createSlice({
         (state.devorce_con = action.payload.devorce_con),
         (state.revoke_per = action.payload.revoke_per),
         (state.alimony_pr = action.payload.alimony_pr),
-        (state.per_no = action.payload.per_no),
+        (state.per_no = 2222222),
         (state.per_date = "2022-5-20");
     },
   },
