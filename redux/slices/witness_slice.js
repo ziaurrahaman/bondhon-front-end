@@ -20,16 +20,15 @@ export const witnessSlice = createSlice({
       state.pop();
     },
     WitnessDataUpdate: (state, action) => {
-      console.log("Actions", action.payload);
       const index = action.payload.index;
-      state[index][state.name] = action.payload.name;
-      state[index][state.dob] = action.payload.dob;
-      state[index][state.detailAddress] = action.payload.detailAddress;
-      state[index][state.behalf] = action.payload.behalf;
-      state[index][state.nid] = action.payload.nid;
-      state[index][state.createBy] = "admin";
+      state[index].name = action.payload.name;
+      state[index].dob = action.payload.dob;
+      state[index].detailAddress = action.payload.detailAddress;
+      state[index].behalf = action.payload.behalf;
+      state[index].nid = action.payload.nid;
+      state[index].createBy = "admin";
 
-      console.log("witstate", action.payload.name);
+      console.log("witstate", state);
     },
   },
   //   reducers: {

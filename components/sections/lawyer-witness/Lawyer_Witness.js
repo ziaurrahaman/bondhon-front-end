@@ -211,16 +211,17 @@ const LawyerWitness = (props) => {
     }
   };
   //data save for lawyer end ---------------------------
-  console.log("witwitwit", witInfo);
+  console.log("witwitwit", witInfo[0]);
+
   //Witness Start ------------------------------------------------------
   const [inputList, setInputList] = useState([
     {
-      name: "",
-      dob: "",
-      detailAddress: "",
-      behalf: "",
-      nid: "",
-      createBy: "",
+      name: witInfo[0].name,
+      dob: witInfo[0].dob,
+      detailAddress: witInfo[0].detailAddress,
+      behalf: witInfo[0].behalf,
+      nid: witInfo[0].nid,
+      createBy: witInfo[0].createBy,
     },
   ]);
 
@@ -230,7 +231,7 @@ const LawyerWitness = (props) => {
       WitnessDataUpdate({
         index: index,
         name: inputList[index].name,
-        dob: inputList[index].detailAddress,
+        dob: inputList[index].dob,
         behalf: inputList[index].behalf,
         nid: inputList[index].nid,
         createBy: "admin",
@@ -584,6 +585,7 @@ const LawyerWitness = (props) => {
                     </TableRow>
                   </TableHead>
                   {inputList.map((input, index) => {
+                    console.log("ninininini", input.nid);
                     return (
                       <>
                         <TableBody>
@@ -697,7 +699,7 @@ const LawyerWitness = (props) => {
               </TableContainer>
             </Grid>
           </div>
-          <Button
+          {/* <Button
             variant="contained"
             color="secondary"
             sx={{ mr: 1 }}
@@ -706,7 +708,7 @@ const LawyerWitness = (props) => {
           >
             {" "}
             জমা দিন
-          </Button>
+          </Button> */}
         </Paper>
       </Container>
     </>
