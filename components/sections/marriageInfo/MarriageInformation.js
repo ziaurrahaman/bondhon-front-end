@@ -1,36 +1,32 @@
-import React from "react";
-
-import {
-  Paper,
-  Button,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  Avatar,
-  Box,
-  Container,
-} from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SendIcon from "@mui/icons-material/Send";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import BasicMarriageInformation from "./BasicMarriageInformation";
-import Groom from "../groom/Groom";
-import Bride from "../bride/Bride";
-import Review from "../../shared/others/review";
-import LawyerFatherAndWitness from "../lawyer-witness/Lawyer_Witness";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Grid, Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography
+} from "@mui/material";
+import axios from "axios";
+import Image from "next/image";
+import React from "react";
+import { NotificationManager } from "react-notifications";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // SetGroomRegPayloadAction,
-  RegisterGroom,
-} from "../../../redux/actions/groom_action";
-import { RegisterBrideAction } from "../../../redux/actions/bride_action";
-import axios from "axios";
-import { NotificationManager } from "react-notifications";
-import { bridesBasicInfo } from "../../../url/ApiList";
-import { bridesAddressInfo } from "../../../url/ApiList";
-
-import { marriageInfoBasicInfoUrl } from "../../../url/ApiList";
+  bridesAddressInfo,
+  bridesBasicInfo,
+  marriageInfoBasicInfoUrl
+} from "../../../url/ApiList";
+import Review from "../../shared/others/review";
+import Bride from "../bride/Bride";
+import Groom from "../groom/Groom";
+import LawyerFatherAndWitness from "../lawyer-witness/Lawyer_Witness";
+import BasicMarriageInformation from "./BasicMarriageInformation";
 
 // ------------ Stepper Steps -------------
 const steps = [
@@ -63,13 +59,43 @@ const bearer = (data) => {};
 const FinalStep = () => {
   return (
     <>
-      <Typography variant="h5" gutterBottom>
-        Thank you for your order.
-      </Typography>
-      <Typography variant="subtitle1">
-        Your order number is #2001539. We have emailed your order confirmation,
-        and will send you an update when your order has shipped.
-      </Typography>
+      <Grid container >
+        <Grid xs={12} sm={12} md={12} sx={{mt:3}}>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Paper variant="outlined" sx={{width:800}}>
+            <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              padding:2,
+            }}
+          >
+              <Image
+                src="/certificate.png"
+                alt="Bride Picture"
+                width={100}
+                height={100}
+              />
+              </Box>
+              <Typography variant="h4" component="h2" sx={{textAlign:"center", color:"#f06292", fontWeight: 'bold'}}>
+              অভিনন্দন !!!
+              </Typography>
+              <Typography variant="h5" component="h2" sx={{textAlign:"center", color:"#1de9b6",fontWeight: 'bold'}}>
+              বিবাহ নিবন্ধন সফলভাবে সম্পূর্ণ হয়েছে
+              </Typography>
+              <Typography variant="h6" component="h2" sx={{textAlign:"center", color:"#1de9b6", fontWeight: 'bold',mb:4}}>
+               বিবাহ নিবন্ধন নং : 15874221445
+              </Typography>
+          </Paper>
+          </Box>
+        </Grid>
+      </Grid>
     </>
   );
 };

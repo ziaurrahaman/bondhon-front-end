@@ -1,47 +1,29 @@
-import { useState } from "react";
-import React from "react";
-import {
-  Grid,
-  Typography,
-  Box,
-  Modal,
-  Container,
-  Paper,
-  Tooltip,
-  Button,
-} from "@mui/material";
-import Title from "../../shared/others/Title";
-import Basic from "../../shared/others/basic";
-import Address from "../../shared/others/address";
-import AddressDetails from "../../shared/others/addressDetails";
-import Image from "next/image";
-import SaveIcon from "@mui/icons-material/Save";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import InputAdornment from "@mui/material/InputAdornment";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import MaleIcon from "@mui/icons-material/Male";
 import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import userInput from "../../hooks/userInput";
-import FormControl from "@mui/material/FormControl";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { bridesBasicInfo } from "../../../url/ApiList";
-import { bridesAddressInfo } from "../../../url/ApiList";
-import axios from "axios";
-import { NotificationManager } from "react-notifications";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
+import {
+  Box, Button, Container, Grid, Modal, Paper,
+  Tooltip, Typography
+} from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Image from "next/image";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  SetGroomRegPayloadAction,
-  RegisterGroom,
+  RegisterGroom, SetGroomRegPayloadAction
 } from "../../../redux/actions/groom_action";
+import AddressDetails from "../../shared/others/addressDetails";
+import Title from "../../shared/others/Title";
+import Capture from "../camera/Capture";
+
+
 
 const style = {
   position: "absolute",
@@ -82,34 +64,39 @@ const Groom = (props) => {
   const [openPic, setOpenPic] = useState(false);
   const [openRight, setOpenRight] = useState(false);
   const [openLeft, setOpenLeft] = useState(false);
+  const [openCamera, setOpenCamera] = useState(false);
   const handleOpenPic = () => setOpenPic(true);
   const handleOpenRight = () => setOpenRight(true);
   const handleOpenLeft = () => setOpenLeft(true);
   const handleClosePic = () => setOpenPic(false);
   const handleCloseRight = () => setOpenRight(false);
   const handleCloseLeft = () => setOpenLeft(false);
+  const handleOpenCamera = () => setOpenCamera(true);
+  const handleCloseCamera = () => setOpenCamera(false);
+
   const groomPayload = useSelector((state) => state.groomReg);
 
-  // Begin Image Brows For Groom
-  const [bridePic, setBridePic] = useState({
-    brideImage: "",
+  const [groomPic, setGroomPic] = useState({
+    groomImage: "",
     mimetypeback: "",
   });
 
-  const [bridePicSubmit, setBridePicSubmit] = useState({});
 
+  const [goomPicSubmit, setGoomPicSubmit] = useState({});
   const [flagForImage, setFlagForImage] = useState("data:image/jpg;base64,");
-  let bridePicture = (e) => {
+
+
+  let groomPicture = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       let file = e.target.files[0];
       var reader = new FileReader();
       reader.readAsBinaryString(file);
-      setBridePic(file);
+      setGroomPic(file);
       reader.onload = () => {
         let base64Image = btoa(reader.result);
-        setBridePic((prevState) => ({
+        setGroomPic((prevState) => ({
           ...prevState,
-          brideImage: base64Image,
+          groomImage: base64Image,
           mimetypeback: file.type,
         }));
       };
@@ -118,7 +105,7 @@ const Groom = (props) => {
 
   //   Submit Button Click on Modal
   const handleOnSubmitPic = () => {
-    setBridePicSubmit(bridePic);
+    setGoomPicSubmit(groomPic);
     handleClosePic(true);
   };
 
@@ -136,13 +123,24 @@ const Groom = (props) => {
     handleCloseLeft(true);
   };
 
+  //Capture Image
+  let onImageConfirm = (base64Image) => {
+    if (base64Image != "") {
+      setOpenCamera(false);
+    }
+    setGroomPic(() => ({
+      groomImage: base64Image,
+      mimetypeback: ".png",
+    }));
+  };
+
   const ImageModalRegion = () => {
     return (
       <>
         <Grid sm={12} md={12} xs={12}>
           <Grid sm={12} md={12} xs={12}>
             <Title>
-              <Typography variant="h6">কনের ছবি সংগ্রহ</Typography>
+              <Typography variant="h6">বরের ছবি সংগ্রহ</Typography>
             </Title>
             <Box
               sx={{
@@ -152,9 +150,9 @@ const Groom = (props) => {
             >
               <Image
                 src={
-                  bridePic.brideImage
-                    ? flagForImage + bridePic.brideImage
-                    : "/bride.png"
+                  groomPic.groomImage
+                    ? flagForImage + groomPic.groomImage
+                    : "/groom.png"
                 }
                 alt="Bride Picture"
                 width={160}
@@ -180,7 +178,7 @@ const Groom = (props) => {
                 variant="outlined"
                 type="file"
                 focused
-                onChange={bridePicture}
+                onChange={groomPicture}
                 onClick={(event) => (event.target.value = null)}
               />
             </Grid>
@@ -189,6 +187,7 @@ const Groom = (props) => {
                 sx={{ marginTop: 3 }}
                 variant="outlined"
                 fullWidth
+                onClick={handleOpenCamera}
                 startIcon={<CameraAltIcon />}
               >
                 ছবি তুলুন
@@ -235,7 +234,7 @@ const Groom = (props) => {
         <Grid sm={12} md={12} xs={12}>
           <Grid sm={12} md={12} xs={12}>
             <Title>
-              <Typography variant="h6">আঙুলের ছাপ (ডান হাত)</Typography>
+              <Typography variant="h6">আঙুলের ছাপ</Typography>
             </Title>
             <Box
               sx={{
@@ -263,7 +262,7 @@ const Groom = (props) => {
         <Grid sm={12} md={12} xs={12}>
           <Grid sm={12} md={12} xs={12}>
             <Title>
-              <Typography variant="h6">আঙুলের ছাপ (বাম হাত)</Typography>
+              <Typography variant="h6">স্বাক্ষর</Typography>
             </Title>
             <Box
               sx={{
@@ -272,7 +271,7 @@ const Groom = (props) => {
               }}
             >
               <Image
-                src="/lefthand.PNG"
+                src="/takesig.PNG"
                 alt="Bride Picture"
                 width={230}
                 height={230}
@@ -351,10 +350,7 @@ const Groom = (props) => {
     details_address: "",
   });
 
-  //   const handleChange = (event) => {
-  //     setReligion(event.target.value);
-  //   };
-
+  
   const handleChange = (e) => {
     dispatch(SetGroomRegPayloadAction(brideInfo));
     const { name, value } = e.target;
@@ -423,9 +419,7 @@ const Groom = (props) => {
         });
         formErrors.relegion = value === "" && "ধর্ম নির্বাচন করুন";
         break;
-      //   case "user_type":
-      //     formErrors.userType = value === "" && "ইউসার এর ধরণ নির্বাচন করুন";
-      //     break;
+      
       case "father_name":
         setBrideInfo({
           ...brideInfo,
@@ -528,63 +522,6 @@ const Groom = (props) => {
 
   let onSubmitData = async (e) => {
     dispatch(RegisterGroom(brideInfo));
-    // console.log(`formErrro: ${formErrors}`);
-    // e.preventDefault();
-    // let payloadForAddress = {
-    //   address_type: brideInfo.address_type,
-    //   user_type: "Bride",
-    //   district_id: brideInfo.district_id,
-    //   upazila_id: brideInfo.upazila_id,
-    //   union_id: brideInfo.union_id,
-    //   post_code: brideInfo.post_code,
-    //   details_address: brideInfo.details_address,
-    // };
-    // let payloadForBrideBasic = {
-    //   nid: brideInfo.nid,
-    //   name: brideInfo.name,
-    //   dob: brideInfo.dob,
-    //   mobile_no: brideInfo.mobile_no,
-    //   email: brideInfo.email,
-    //   relegion: brideInfo.relegion,
-    //   father_name: brideInfo.father_name,
-    //   father_nid: brideInfo.father_nid,
-    //   mother_name: brideInfo.mother_name,
-    //   mother_nid: brideInfo.mother_nid,
-    // };
-    // console.log("payload value after clicking", payloadForBrideBasic);
-    // console.log("payload value after clicking", payloadForAddress);
-    // try {
-    //   console.log(` url1 ${bridesBasicInfo} `);
-    //   // console.log("token", config);
-    //   const brideBasicData = await axios.post(
-    //     bridesBasicInfo,
-    //     payloadForBrideBasic
-    //   );
-    //   const brideAddressData = await axios.post(
-    //     bridesAddressInfo,
-    //     payloadForAddress
-    //   );
-
-    //   console.log("pay", brideBasicData.data.message);
-    //   console.log("pay", brideAddressData.data.message);
-    //   NotificationManager.success(brideBasicData.data.message, "Success", 5000);
-    //   NotificationManager.success(
-    //     brideAddressData.data.message,
-    //     "Success",
-    //     5000
-    //   );
-
-    //   //router.push({ pathname: "/coop/income-expense" });
-    // } catch (error) {
-    //   if (error.response) {
-    //     let message = error.response.data.errors[0].message;
-    //     NotificationManager.error(message, "Error", 5000);
-    //   } else if (error.request) {
-    //     NotificationManager.error("Error Connecting...", "Error", 5000);
-    //   } else if (error) {
-    //     // NotificationManager.error(error.toString(), "Error", 5000);
-    //   }
-    // }
   };
 
   return (
@@ -1152,8 +1089,8 @@ const Groom = (props) => {
                 <Image
                   onClick={handleOpenPic}
                   src={
-                    bridePicSubmit.brideImage
-                      ? flagForImage + bridePicSubmit.brideImage
+                    goomPicSubmit.groomImage
+                      ? flagForImage + goomPicSubmit.groomImage
                       : "/groom.png"
                   }
                   alt="Bride Picture"
@@ -1188,12 +1125,12 @@ const Groom = (props) => {
               </Modal>
               <Grid sm={12} md={12} xs={12} sx={{ marginTop: 3 }}>
                 <Title>
-                  <Typography variant="h6">আঙুলের ছাপ (ডান হাত)</Typography>
+                  <Typography variant="h6">আঙুলের ছাপ</Typography>
                 </Title>
                 <Image
                   onClick={handleOpenRight}
                   src={RightFP ? "/success2.png" : "/fng.png"}
-                  alt="Bride Finger Right"
+                  alt="Groom Finger Right"
                   width={120}
                   height={120}
                 />
@@ -1225,12 +1162,12 @@ const Groom = (props) => {
               </Modal>
               <Grid sm={12} md={12} xs={12} sx={{ marginTop: 3 }}>
                 <Title>
-                  <Typography variant="h6">আঙুলের ছাপ (বাম হাত)</Typography>
+                  <Typography variant="h6">স্বাক্ষর</Typography>
                 </Title>
                 <Image
                   onClick={handleOpenLeft}
-                  src={LeftFP ? "/success2.png" : "/fng.png"}
-                  alt="Bride Finger Left"
+                  src={LeftFP ? "/sig.jpg":"/digital-signature.png"}
+                  alt="Groom Finger Right"
                   width={120}
                   height={120}
                 />
@@ -1260,6 +1197,30 @@ const Groom = (props) => {
                   </Box>
                 </Box>
               </Modal>
+              {/* camera modal */}
+              <Grid sm={12} md={12} xs={12}>
+                <Modal
+                  open={openCamera}
+                  onClose={handleCloseCamera}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <Title>
+                      <Typography variant="h6">ক্যামেরা</Typography>
+                    </Title>
+                    {/* <CameraModal/> */}
+                    <Capture onConfirm={onImageConfirm} />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                    </Box>
+                  </Box>
+                </Modal>
+              </Grid>
             </Grid>
 
             {props.title !== "MarriageInfo" && (

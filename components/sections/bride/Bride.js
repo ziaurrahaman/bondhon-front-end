@@ -1,48 +1,29 @@
-import { useState } from "react";
-import React from "react";
-import {
-  Grid,
-  Typography,
-  Box,
-  Modal,
-  Container,
-  Paper,
-  Tooltip,
-  Button,
-} from "@mui/material";
-import Title from "../../shared/others/Title";
-import Basic from "../../shared/others/basic";
-import Address from "../../shared/others/address";
-import AddressDetails from "../../shared/others/addressDetails";
-import Image from "next/image";
-import SaveIcon from "@mui/icons-material/Save";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import InputAdornment from "@mui/material/InputAdornment";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import MaleIcon from "@mui/icons-material/Male";
 import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import userInput from "../../hooks/userInput";
-import FormControl from "@mui/material/FormControl";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { bridesBasicInfo } from "../../../url/ApiList";
-import { bridesAddressInfo } from "../../../url/ApiList";
-import axios from "axios";
-import { NotificationManager } from "react-notifications";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
-import Capture from "../camera/Capture";
+import {
+  Box, Button, Container, Grid, Modal, Paper,
+  Tooltip, Typography
+} from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Image from "next/image";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  SetBrideRegPayloadAction,
-  RegisterBrideAction,
+  RegisterBrideAction, SetBrideRegPayloadAction
 } from "../../../redux/actions/bride_action";
+import AddressDetails from "../../shared/others/addressDetails";
+import Title from "../../shared/others/Title";
+import Capture from "../camera/Capture";
+
+
 
 const style = {
   position: "absolute",
@@ -141,11 +122,12 @@ const Bride = (props) => {
   };
   //Capture Image
   let onImageConfirm = (base64Image) => {
+    console.log(base64Image);
     if (base64Image != "") {
       setOpenCamera(false);
     }
-    setGroomPic(() => ({
-      groomImage: base64Image,
+    setBridePic(() => ({
+      brideImage: base64Image,
       mimetypeback: ".png",
     }));
   };
@@ -203,13 +185,14 @@ const Bride = (props) => {
                 sx={{ marginTop: 3 }}
                 variant="outlined"
                 fullWidth
+                onClick={handleOpenCamera}
                 startIcon={<CameraAltIcon />}
               >
                 ছবি তুলুন
               </Button>
             </Grid>
           </Grid>
-          <Grid sm={12} md={12} xs={12}>
+          {/* <Grid sm={12} md={12} xs={12}>
             <Modal
               // open={openPic}
               // onClose={handleClosePic}
@@ -235,7 +218,7 @@ const Bride = (props) => {
                 </Box>
               </Box>
             </Modal>
-          </Grid>
+          </Grid> */}
         </Grid>
       </>
     );
@@ -249,7 +232,7 @@ const Bride = (props) => {
         <Grid sm={12} md={12} xs={12}>
           <Grid sm={12} md={12} xs={12}>
             <Title>
-              <Typography variant="h6">আঙুলের ছাপ (ডান হাত)</Typography>
+              <Typography variant="h6">আঙুলের ছাপ</Typography>
             </Title>
             <Box
               sx={{
@@ -277,7 +260,7 @@ const Bride = (props) => {
         <Grid sm={12} md={12} xs={12}>
           <Grid sm={12} md={12} xs={12}>
             <Title>
-              <Typography variant="h6">আঙুলের ছাপ (বাম হাত)</Typography>
+              <Typography variant="h6">স্বাক্ষর</Typography>
             </Title>
             <Box
               sx={{
@@ -286,7 +269,7 @@ const Bride = (props) => {
               }}
             >
               <Image
-                src="/lefthand.PNG"
+                src="/takesig.PNG"
                 alt="Bride Picture"
                 width={230}
                 height={230}
@@ -1203,7 +1186,7 @@ const Bride = (props) => {
               </Modal>
               <Grid sm={12} md={12} xs={12} sx={{ marginTop: 3 }}>
                 <Title>
-                  <Typography variant="h6">আঙুলের ছাপ (ডান হাত)</Typography>
+                  <Typography variant="h6">আঙুলের ছাপ</Typography>
                 </Title>
                 <Image
                   onClick={handleOpenRight}
@@ -1240,11 +1223,11 @@ const Bride = (props) => {
               </Modal>
               <Grid sm={12} md={12} xs={12} sx={{ marginTop: 3 }}>
                 <Title>
-                  <Typography variant="h6">আঙুলের ছাপ (বাম হাত)</Typography>
+                  <Typography variant="h6">স্বাক্ষর</Typography>
                 </Title>
                 <Image
                   onClick={handleOpenLeft}
-                  src={LeftFP ? "/success2.png" : "/fng.png"}
+                  src={LeftFP ? "/sig.jpg":"/digital-signature.png"}
                   alt="Bride Finger Left"
                   width={120}
                   height={120}
@@ -1275,6 +1258,29 @@ const Bride = (props) => {
                   </Box>
                 </Box>
               </Modal>
+              <Grid sm={12} md={12} xs={12}>
+                <Modal
+                  open={openCamera}
+                  onClose={handleCloseCamera}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <Title>
+                      <Typography variant="h6">ক্যামেরা</Typography>
+                    </Title>
+                    {/* <CameraModal/> */}
+                    <Capture onConfirm={onImageConfirm} />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                    </Box>
+                  </Box>
+                </Modal>
+              </Grid>
             </Grid>
 
             {props.title !== "MarriageInfo" && (
