@@ -46,7 +46,7 @@ export const brideGroomSlice = createSlice({
       //   union_id: action.payload.union_id,
       //   post_code: action.payload.post_code,
       //   details_address: action.payload.details_address,
-      (state.nid = action.payload.name),
+      (state.nid = action.payload.nid),
         (state.name = action.payload.name),
         (state.dob = action.payload.dob),
         (state.mobile_no = action.payload.mobile_no),
