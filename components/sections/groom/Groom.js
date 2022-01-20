@@ -88,9 +88,7 @@ const Groom = (props) => {
   const handleClosePic = () => setOpenPic(false);
   const handleCloseRight = () => setOpenRight(false);
   const handleCloseLeft = () => setOpenLeft(false);
-  const groomPayload = useSelector((state) => state.groomReg.value);
-
- 
+  const groomPayload = useSelector((state) => state.groomReg);
 
   // Begin Image Brows For Groom
   const [bridePic, setBridePic] = useState({
@@ -302,23 +300,35 @@ const Groom = (props) => {
     return flag;
   };
   const [brideInfo, setBrideInfo] = useState({
-    nid: "",
-    name: "",
-    dob: "",
-    mobile_no: "",
-    email: "",
-    relegion: "",
-    father_name: "",
-    father_nid: "",
-    mother_name: "",
-    mother_nid: "",
-    address_type: "",
-    user_type: "",
-    district_id: "",
-    upazila_id: "",
-    union_id: "",
-    post_code: "",
-    details_address: "",
+    nid: groomPayload.nid !== undefined ? groomPayload.nid : "",
+    name: groomPayload.name !== undefined ? groomPayload.name : "",
+    dob: groomPayload.dob !== undefined ? groomPayload.dob : "",
+    mobile_no:
+      groomPayload.mobile_no !== undefined ? groomPayload.mobile_no : "",
+    email: groomPayload.email !== undefined ? groomPayload.email : "",
+    relegion: groomPayload.relegion !== undefined ? groomPayload.relegion : "",
+    father_name:
+      groomPayload.father_name !== undefined ? groomPayload.father_name : "",
+    father_nid:
+      groomPayload.father_nid !== undefined ? groomPayload.father_nid : "",
+    mother_name:
+      groomPayload.mother_name !== undefined ? groomPayload.mother_name : "",
+    mother_nid:
+      groomPayload.mother_nid !== undefined ? groomPayload.mother_nid : "",
+    address_type:
+      groomPayload.address_type !== undefined ? groomPayload.address_type : "",
+    user_type:
+      groomPayload.user_type !== undefined ? groomPayload.user_type : "",
+    district_id:
+      groomPayload.district_id !== undefined ? groomPayload.district_id : "",
+    upazila_id:
+      groomPayload.upazila_id !== undefined ? groomPayload.upazila_id : "",
+    union_id: groomPayload.union_id !== undefined ? groomPayload.union_id : "",
+    post_code: groomPayload.union_id !== undefined ? groomPayload.union_id : "",
+    details_address:
+      groomPayload.details_address !== undefined
+        ? groomPayload.details_address
+        : "",
   });
 
   const [formErrors, setFormErrors] = useState({
